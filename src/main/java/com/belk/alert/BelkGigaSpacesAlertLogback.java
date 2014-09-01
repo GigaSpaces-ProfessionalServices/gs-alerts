@@ -15,12 +15,14 @@ import java.util.Date;
 
 public class BelkGigaSpacesAlertLogback {
 
-    private static Logger logger = LoggerFactory.getLogger("tutu");
+    private static Logger logger = LoggerFactory.getLogger("belk-alerts");
 
     public static void main(String[] args) {
-        Admin admin = new AdminFactory().addLocator("localhost:4174").createAdmin();
+        String lus = args[0];
+        String alertsConfiguration = args[1];
+        Admin admin = new AdminFactory().addLocator(lus).createAdmin();
         AlertManager alertManager = admin.getAlertManager();
-        alertManager.configure(new XmlAlertConfigurationParser("belk-alerts.xml").parse());
+        alertManager.configure(new XmlAlertConfigurationParser(alertsConfiguration).parse());
         alertManager.getAlertTriggered().add(new BelkAlertTriggeredEventListener());
     }
 
@@ -56,7 +58,7 @@ public class BelkGigaSpacesAlertLogback {
                     "Current Value: {} \n" +
                     "Short Message: {} \n" +
                     "Long Message: {} \n";
-            logger.error(message, alertLevel, hostName, ipInfo, name, status, date, componentDescription, null, null, null, null, threshold, null, null, longMessage);
+            logger.error(message, alertLevel, hostName, ipInfo, name, status, date, componentDescription, name, null, alert.getAlertUid(), null, threshold, null, null, longMessage);
 
             System.out.println("MAIL SENT");
         }
