@@ -1,0 +1,22 @@
+<configuration>
+    <appender name="EMAIL" class="ch.qos.logback.classic.net.SMTPAppender">
+
+        <smtpHost>smtp.gmail.com</smtpHost>
+        <smtpPort>587</smtpPort>
+        <STARTTLS>true</STARTTLS>
+
+        <username>alerts.belk.test@gmail.com</username>
+        <password>alerts123</password>
+
+        <to>alerts.belk.test@gmail.com</to>
+        <from>alerts.belk.test@gmail.com</from>
+        <subject>%date - %m{50}</subject>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%message%n</pattern>
+        </layout>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="EMAIL" />
+    </root>
+</configuration>
