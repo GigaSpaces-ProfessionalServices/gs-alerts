@@ -5,4 +5,4 @@ belk-alerts
 
 To execute the application the command is as follows:
 
-java -jar BelkAlerts.jar \<lookup-service\> \<path-to-alert-xml-configuration\>
+java -jar BelkAlerts.jar \<lookup-service\> \<path-to-alert-xml-configuration\> \<username\> \<password\>
