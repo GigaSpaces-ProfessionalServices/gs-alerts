@@ -10,41 +10,41 @@
     <alert
             class="org.openspaces.admin.alert.config.PhysicalMemoryUtilizationAlertConfiguration"
             enabled="true">
-        <property key="high-threshold-perc" value="80" />
-        <property key="low-threshold-perc" value="60" />
+        <property key="high-threshold-perc" value="94" />
+        <property key="low-threshold-perc" value="88" />
         <property key="measurement-period-milliseconds" value="60000" />
     </alert>
 
     <alert
             class="org.openspaces.admin.alert.config.HeapMemoryUtilizationAlertConfiguration"
             enabled="true">
-        <property key="high-threshold-perc" value="80" />
-        <property key="low-threshold-perc" value="60" />
+        <property key="high-threshold-perc" value="65" />
+        <property key="low-threshold-perc" value="50" />
         <property key="measurement-period-milliseconds" value="60000" />
     </alert>
 
     <alert
             class="org.openspaces.admin.alert.config.GarbageCollectionAlertConfiguration"
-            enabled="false">
-        <property key="long-gc-pause-period-milliseconds" value="10000" />
-        <property key="short-gc-pause-period-milliseconds" value="1000" />
+            enabled="true">
+        <property key="long-gc-pause-period-milliseconds" value="20000" />
+        <property key="short-gc-pause-period-milliseconds" value="10000" />
     </alert>
 
     <alert
             class="org.openspaces.admin.alert.config.ReplicationChannelDisconnectedAlertConfiguration"
-            enabled="false">
+            enabled="true">
     </alert>
 
     <alert
             class="org.openspaces.admin.alert.config.ReplicationRedoLogOverflowToDiskAlertConfiguration"
-            enabled="false">
+            enabled="true">
     </alert>
 
     <alert
             class="org.openspaces.admin.alert.config.ReplicationRedoLogSizeAlertConfiguration"
             enabled="true">
-        <property key="high-threshold-redo-log-size" value="100000" />
-        <property key="low-threshold-redo-log-size" value="1000" />
+        <property key="high-threshold-redo-log-size" value="1000000" />
+        <property key="low-threshold-redo-log-size" value="500000" />
     </alert>
 
     <alert
@@ -54,7 +54,7 @@
 
     <alert
             class="org.openspaces.admin.alert.config.ProvisionFailureAlertConfiguration"
-            enabled="true">
+            enabled="false">
     </alert>
 
     <alert

@@ -1,12 +1,11 @@
 <configuration>
     <appender name="EMAIL" class="ch.qos.logback.classic.net.SMTPAppender">
 
-        <smtpHost>BELKECMAIL50VM</smtpHost>
+        <smtpHost>outmail.belkinc.com</smtpHost>
         <smtpPort>25</smtpPort>
         <STARTTLS>true</STARTTLS>
 
-        <to>ecommQAEnvironment@belk.com</to>
-        <to>sachin_kulkarni@belk.com</to>
+        <to>ecommitopssupport@belk.com</to>
         <from>gigaspace.admin@belk.com</from>
         <subject>%date - %m{100}</subject>
         <layout class="ch.qos.logback.classic.PatternLayout">
