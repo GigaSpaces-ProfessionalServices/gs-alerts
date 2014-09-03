@@ -20,7 +20,11 @@ public class BelkGigaSpacesAlertLogback {
     public static void main(String[] args) {
         String lus = args[0];
         String alertsConfiguration = args[1];
-        Admin admin = new AdminFactory().addLocator(lus).createAdmin();
+        String username = args[2];
+        String password = args[3];
+
+        Admin admin = new AdminFactory().addLocator(lus).credentials(username, password).createAdmin();
+
         AlertManager alertManager = admin.getAlertManager();
         alertManager.configure(new XmlAlertConfigurationParser(alertsConfiguration).parse());
         alertManager.getAlertTriggered().add(new BelkAlertTriggeredEventListener());
