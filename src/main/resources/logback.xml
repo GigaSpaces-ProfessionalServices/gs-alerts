@@ -8,7 +8,7 @@
         <to>ecommQAEnvironment@belk.com</to>
         <to>sachin_kulkarni@belk.com</to>
         <from>gigaspace.admin@belk.com</from>
-        <subject>%date - %m{50}</subject>
+        <subject>%date - %m{100}</subject>
         <layout class="ch.qos.logback.classic.PatternLayout">
             <pattern>%message%n</pattern>
         </layout>

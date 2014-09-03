@@ -47,6 +47,7 @@ public class BelkGigaSpacesAlertLogback {
             Date date = new Date(alert.getTimestamp());
             String threshold = alert.getConfig().get("high-threshold-perc");
 
+            String introduction = String.format("%s %s", alertLevel, name);
             String message = "{} \n" +
                     "Host info: {} \n" +
                     "IP info: {} \n" +
@@ -62,7 +63,7 @@ public class BelkGigaSpacesAlertLogback {
                     "Current Value: {} \n" +
                     "Short Message: {} \n" +
                     "Long Message: {} \n";
-            logger.error(message, alertLevel, hostName, ipInfo, name, status, date, componentDescription, name, null, alert.getAlertUid(), null, threshold, null, null, longMessage);
+            logger.error(message, introduction, hostName, ipInfo, name, status, date, componentDescription, name, null, alert.getAlertUid(), null, threshold, null, null, longMessage);
 
             System.out.println("MAIL SENT");
         }
