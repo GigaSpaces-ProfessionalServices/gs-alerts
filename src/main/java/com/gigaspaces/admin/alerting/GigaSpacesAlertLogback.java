@@ -22,7 +22,7 @@ public class GigaSpacesAlertLogback {
     public static final String SECURE_SPACE_OPTION = "secure";
     public static final String USERNAME_OPTION = "username";
     public static final String PASSWORD_OPTION = "password";
-    public static final String COMMAND_LINE_NAME = "GigaSpacesAlerts";
+    public static final String COMMAND_LINE_NAME = "gs-alerting.jar";
     public static final String ALERT_CONFIGURATION = "alert";
     public static final String LOG_CONFIGURATION = "log";
 

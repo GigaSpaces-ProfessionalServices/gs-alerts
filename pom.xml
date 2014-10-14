@@ -70,7 +70,7 @@
                         <configuration>
                             <attachToBuild>true</attachToBuild>
                             <classifier>executable</classifier>
-                            <filename>GigaSpacesAlerts.jar</filename>
+                            <filename>gs-alerting.jar</filename>
                             <mainClass>com.gigaspaces.admin.alerting.GigaSpacesAlertLogback</mainClass>
                         </configuration>
                         <goals>
