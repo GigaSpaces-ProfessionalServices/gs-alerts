@@ -4,12 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.belk</groupId>
-    <artifactId>alert</artifactId>
+    <groupId>com.gigaspaces.admin</groupId>
+    <artifactId>alerting</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <gigaspaces.version>9.7.0-10496-RELEASE</gigaspaces.version>
         <logback.version>1.1.2</logback.version>
     </properties>
 
@@ -22,27 +21,9 @@
         <dependency>
             <groupId>com.gigaspaces</groupId>
             <artifactId>gs-openspaces</artifactId>
-            <version>${gigaspaces.version}</version>
+            <version>9.7.1-10800-RELEASE</version>
             <scope>compile</scope>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>junit</groupId>-->
-            <!--<artifactId>junit</artifactId>-->
-            <!--<version>4.11</version>-->
-            <!--<scope>test</scope>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.mockito</groupId>-->
-            <!--<artifactId>mockito-all</artifactId>-->
-            <!--<version>1.9.5</version>-->
-            <!--<scope>test</scope>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>log4j</groupId>-->
-            <!--<artifactId>log4j</artifactId>-->
-            <!--<version>1.2.17</version>-->
-        <!--</dependency>-->
-
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
@@ -89,8 +70,8 @@
                         <configuration>
                             <attachToBuild>true</attachToBuild>
                             <classifier>executable</classifier>
-                            <filename>BelkAlerts.jar</filename>
-                            <mainClass>com.belk.alert.BelkGigaSpacesAlertLogback</mainClass>
+                            <filename>GigaSpacesAlerts.jar</filename>
+                            <mainClass>com.gigaspaces.admin.alerting.GigaSpacesAlertLogback</mainClass>
                         </configuration>
                         <goals>
                             <goal>one-jar</goal>
