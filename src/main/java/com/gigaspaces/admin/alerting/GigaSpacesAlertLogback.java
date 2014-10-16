@@ -67,7 +67,7 @@ public class GigaSpacesAlertLogback {
     }
 
     private static boolean validateArguments(String[] args, CommandLine commandLine) {
-        boolean output = false;
+        boolean output = true;
         Options options = new Options();
         options.addOption(LOOKUP_LOCATORS_OPTION, true, "GigaSpaces lookup locators.");
         options.addOption(SECURE_SPACE_OPTION, false, "Connecting to a secure grid.");
@@ -82,9 +82,14 @@ public class GigaSpacesAlertLogback {
             commandLine = parser.parse(options, args);
 
             if(commandLine.hasOption(SECURE_SPACE_OPTION)
-                    && (commandLine.hasOption(USERNAME_OPTION) && commandLine.hasOption(PASSWORD_OPTION))){
-                output = true;
+                    && !(commandLine.hasOption(USERNAME_OPTION) && commandLine.hasOption(PASSWORD_OPTION))){
+                output = false;
             }
+
+            if(output && !(commandLine.hasOption(ALERT_CONFIGURATION) && commandLine.hasOption(LOG_CONFIGURATION))){
+                output = false;
+            }
+
         } catch(ParseException exception){
 
         }
