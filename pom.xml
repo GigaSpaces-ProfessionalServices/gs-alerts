@@ -31,19 +31,19 @@
         </dependency>
 
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>${logback.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-core</artifactId>
-            <version>${logback.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.5</version>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.10</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.log4j.ext</groupId>
+            <artifactId>snmptrapappender</artifactId>
+            <version>1.2.9</version>
+        </dependency>
+        <dependency>
+            <groupId>opennms</groupId>
+            <artifactId>opennms-joesnmp</artifactId>
+            <version>20031201-173122</version>
         </dependency>
     </dependencies>
 

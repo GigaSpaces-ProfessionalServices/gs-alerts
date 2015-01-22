@@ -1,20 +1,17 @@
 package com.gigaspaces.admin.alerting;
 
-
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.joran.JoranConfigurator;
-import ch.qos.logback.core.joran.spi.JoranException;
 import org.apache.commons.cli.*;
 import org.openspaces.admin.Admin;
 import org.openspaces.admin.AdminFactory;
 import org.openspaces.admin.alert.Alert;
 import org.openspaces.admin.alert.AlertManager;
+import org.openspaces.admin.alert.config.AlertConfiguration;
 import org.openspaces.admin.alert.config.parser.XmlAlertConfigurationParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
-
+import java.util.Map;
 
 public class GigaSpacesAlertLogback {
 
@@ -26,33 +23,28 @@ public class GigaSpacesAlertLogback {
     public static final String ALERT_CONFIGURATION = "alert";
     public static final String LOG_CONFIGURATION = "log";
 
-    private static final LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
-
     public static void main(String[] args) {
 
-        CommandLine commandLine = null;
+        CommandLine commandLine = buildCommandLine(args);
 
-        if(!validateArguments(args, commandLine)){
+        if(!validateArguments(commandLine)){
             return;
         }
 
-        try {
-            JoranConfigurator configurator = new JoranConfigurator();
-            configurator.setContext(context);
-            configurator.doConfigure(commandLine.getOptionValue(LOG_CONFIGURATION));
-        } catch (JoranException je) {
-            // StatusPrinter will handle this
-        } catch (Exception ex) {
-            ex.printStackTrace(); // Just in case, so we see a stacktrace
-        }
-
-        Logger logger = LoggerFactory.getLogger("alert-logger");
+        Logger logger = LoggerFactory.getLogger("snmp-logger");
 
         Admin admin = createAdminApi(commandLine);
+
+        XmlAlertConfigurationParser xmlParser = new XmlAlertConfigurationParser(commandLine.getOptionValue(ALERT_CONFIGURATION));
+        AlertConfiguration[] acs = xmlParser.parse();
+        for (AlertConfiguration ac: acs) {
+            Map<String, String> props = ac.getProperties();
+        }
 
         AlertManager alertManager = admin.getAlertManager();
         alertManager.configure(new XmlAlertConfigurationParser(commandLine.getOptionValue(ALERT_CONFIGURATION)).parse());
         alertManager.getAlertTriggered().add(new AlertTriggeredEventListener(logger));
+        System.out.println("Alert listener installed");
     }
 
     private static Admin createAdminApi(CommandLine commandLine) {
@@ -66,8 +58,18 @@ public class GigaSpacesAlertLogback {
         return factory.createAdmin();
     }
 
-    private static boolean validateArguments(String[] args, CommandLine commandLine) {
-        boolean output = true;
+    private static CommandLine buildCommandLine(String[] args) {
+        CommandLineParser parser = new BasicParser();
+        Options options = buildOptions();
+        try {
+            return parser.parse(options, args);
+        } catch (ParseException exception) {
+            System.out.println(exception.getStackTrace());
+            return null;
+        }
+    }
+
+    private static Options buildOptions() {
         Options options = new Options();
         options.addOption(LOOKUP_LOCATORS_OPTION, true, "GigaSpaces lookup locators.");
         options.addOption(SECURE_SPACE_OPTION, false, "Connecting to a secure grid.");
@@ -75,23 +77,24 @@ public class GigaSpacesAlertLogback {
         options.addOption(PASSWORD_OPTION, true, "Password to connect to the grid. Required when grid is secured.");
         options.addOption(ALERT_CONFIGURATION, true, "Configuration file for alerting threshold.");
         options.addOption(LOG_CONFIGURATION, true, "Configuration file for logging.");
+        return options;
+    }
 
-        CommandLineParser parser = new BasicParser();
+    private static boolean validateArguments(CommandLine commandLine) {
+        if(commandLine == null) {
+            return false;
+        }
+        
+        boolean output = true;
+        Options options = buildOptions();
 
-        try {
-            commandLine = parser.parse(options, args);
+        if(commandLine.hasOption(SECURE_SPACE_OPTION)
+                && !(commandLine.hasOption(USERNAME_OPTION) && commandLine.hasOption(PASSWORD_OPTION))){
+            output = false;
+        }
 
-            if(commandLine.hasOption(SECURE_SPACE_OPTION)
-                    && !(commandLine.hasOption(USERNAME_OPTION) && commandLine.hasOption(PASSWORD_OPTION))){
-                output = false;
-            }
-
-            if(output && !(commandLine.hasOption(ALERT_CONFIGURATION) && commandLine.hasOption(LOG_CONFIGURATION))){
-                output = false;
-            }
-
-        } catch(ParseException exception){
-
+        if(output && !(commandLine.hasOption(ALERT_CONFIGURATION) && commandLine.hasOption(LOG_CONFIGURATION))){
+            output = false;
         }
 
         if(!output){
@@ -107,7 +110,6 @@ public class GigaSpacesAlertLogback {
         private Logger logger;
 
         public AlertTriggeredEventListener(Logger logger) {
-
             this.logger = logger;
         }
 
