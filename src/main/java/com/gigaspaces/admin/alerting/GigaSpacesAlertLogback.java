@@ -1,5 +1,9 @@
 package com.gigaspaces.admin.alerting;
 
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.joran.JoranConfigurator;
+import ch.qos.logback.core.joran.spi.JoranException;
+
 import org.apache.commons.cli.*;
 import org.openspaces.admin.Admin;
 import org.openspaces.admin.AdminFactory;
@@ -23,12 +27,24 @@ public class GigaSpacesAlertLogback {
     public static final String ALERT_CONFIGURATION = "alert";
     public static final String LOG_CONFIGURATION = "log";
 
+    private static final LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
+
     public static void main(String[] args) {
 
         CommandLine commandLine = buildCommandLine(args);
 
         if(!validateArguments(commandLine)){
             return;
+        }
+
+        try {
+            JoranConfigurator configurator = new JoranConfigurator();
+            configurator.setContext(context);
+            configurator.doConfigure(commandLine.getOptionValue(LOG_CONFIGURATION));
+        } catch (JoranException je) {
+            // StatusPrinter will handle this
+        } catch (Exception ex) {
+            ex.printStackTrace(); // Just in case, so we see a stacktrace
         }
 
         Logger logger = LoggerFactory.getLogger("alert-logger");
