@@ -31,7 +31,7 @@ public class GigaSpacesAlertLogback {
             return;
         }
 
-        Logger logger = LoggerFactory.getLogger("snmp-logger");
+        Logger logger = LoggerFactory.getLogger("alert-logger");
 
         Admin admin = createAdminApi(commandLine);
 
