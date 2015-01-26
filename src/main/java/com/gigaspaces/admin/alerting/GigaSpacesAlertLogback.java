@@ -1,9 +1,5 @@
 package com.gigaspaces.admin.alerting;
 
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.joran.JoranConfigurator;
-import ch.qos.logback.core.joran.spi.JoranException;
-
 import org.apache.commons.cli.*;
 import org.openspaces.admin.Admin;
 import org.openspaces.admin.AdminFactory;
@@ -27,24 +23,11 @@ public class GigaSpacesAlertLogback {
     public static final String ALERT_CONFIGURATION = "alert";
     public static final String LOG_CONFIGURATION = "log";
 
-    private static final LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
-
     public static void main(String[] args) {
 
         CommandLine commandLine = buildCommandLine(args);
-
-        if(!validateArguments(commandLine)){
+        if(commandLine == null || !validateArguments(commandLine)){
             return;
-        }
-
-        try {
-            JoranConfigurator configurator = new JoranConfigurator();
-            configurator.setContext(context);
-            configurator.doConfigure(commandLine.getOptionValue(LOG_CONFIGURATION));
-        } catch (JoranException je) {
-            // StatusPrinter will handle this
-        } catch (Exception ex) {
-            ex.printStackTrace(); // Just in case, so we see a stacktrace
         }
 
         Logger logger = LoggerFactory.getLogger("alert-logger");
@@ -60,7 +43,6 @@ public class GigaSpacesAlertLogback {
         AlertManager alertManager = admin.getAlertManager();
         alertManager.configure(new XmlAlertConfigurationParser(commandLine.getOptionValue(ALERT_CONFIGURATION)).parse());
         alertManager.getAlertTriggered().add(new AlertTriggeredEventListener(logger));
-        System.out.println("Alert listener installed");
     }
 
     private static Admin createAdminApi(CommandLine commandLine) {
@@ -97,28 +79,26 @@ public class GigaSpacesAlertLogback {
     }
 
     private static boolean validateArguments(CommandLine commandLine) {
-        if(commandLine == null) {
-            return false;
-        }
-        
-        boolean output = true;
-        Options options = buildOptions();
-
-        if(commandLine.hasOption(SECURE_SPACE_OPTION)
-                && !(commandLine.hasOption(USERNAME_OPTION) && commandLine.hasOption(PASSWORD_OPTION))){
-            output = false;
-        }
-
-        if(output && !(commandLine.hasOption(ALERT_CONFIGURATION) && commandLine.hasOption(LOG_CONFIGURATION))){
-            output = false;
-        }
-
-        if(!output){
+        if(areSecureOptionsValid(commandLine) && areConfigOptionsValid(commandLine)) {
+            return true;
+        } else {
             HelpFormatter helpFormatter = new HelpFormatter();
+            Options options = buildOptions();
             helpFormatter.printHelp(COMMAND_LINE_NAME, options, true);
+            return false;
+        } 
+    }
+    
+    private static boolean areSecureOptionsValid(CommandLine commandLine) {
+        if (commandLine.hasOption(SECURE_SPACE_OPTION)) {
+            return commandLine.hasOption(USERNAME_OPTION) && commandLine.hasOption(PASSWORD_OPTION);
+        } else {
+            return true;
         }
-
-        return output;
+    }
+    
+    private static boolean areConfigOptionsValid(CommandLine commandLine) {
+        return commandLine.hasOption(ALERT_CONFIGURATION) && commandLine.hasOption(LOG_CONFIGURATION);
     }
 
     private static class AlertTriggeredEventListener implements org.openspaces.admin.alert.events.AlertTriggeredEventListener {
@@ -131,9 +111,6 @@ public class GigaSpacesAlertLogback {
 
         @Override
         public void alertTriggered(Alert alert) {
-
-            System.out.println("ALERT");
-
             String alertLevel = alert.getSeverity().getName();
             String name = alert.getName();
             String componentDescription = alert.getComponentDescription();
@@ -160,10 +137,7 @@ public class GigaSpacesAlertLogback {
                     "Current Value: {} \n" +
                     "Short Message: {} \n" +
                     "Long Message: {} \n";
-            logger.error(message, introduction, hostName, ipInfo, name, status, date, componentDescription, name, null, alert.getAlertUid(), null, threshold, null, null, longMessage);
-
-            System.out.println("MAIL SENT");
+            logger.info(message, introduction, hostName, ipInfo, name, status, date, componentDescription, name, null, alert.getAlertUid(), null, threshold, null, null, longMessage);
         }
     }
-
 }

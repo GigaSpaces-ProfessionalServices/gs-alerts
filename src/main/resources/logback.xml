@@ -13,7 +13,32 @@
         </layout>
     </appender>
 
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%message%n</pattern>
+        </layout>
+    </appender>
+
+    <appender name="SNMP" class="com.gigaspaces.admin.alerting.SNMPTrapLogbackAppender">
+        <ManagementHost>127.0.0.1</ManagementHost>
+        <ManagementHostTrapListenPort>162</ManagementHostTrapListenPort>
+        <LocalIPAddress>127.0.0.1</LocalIPAddress>
+        <LocalTrapSendPort>1611</LocalTrapSendPort>
+        
+        <EnterpriseOID>1.3.6.1.4.1.24.0</EnterpriseOID>
+        <GenericTrapType>6</GenericTrapType>
+        <SpecificTrapType>12345678</SpecificTrapType>
+
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%message%n</pattern>
+        </layout>
+    </appender>
+
     <root level="DEBUG">
-        <appender-ref ref="EMAIL" />
+        <appender-ref ref="CONSOLE" />
     </root>
+    
+    <logger name="alert-logger" level="DEBUG" additivity="true">
+        <appender-ref ref="SNMP" />
+    </logger>
 </configuration>
