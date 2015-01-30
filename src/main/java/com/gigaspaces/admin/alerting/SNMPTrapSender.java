@@ -1,7 +1,6 @@
 package com.gigaspaces.admin.alerting;
 
 import java.net.InetAddress;
-import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
