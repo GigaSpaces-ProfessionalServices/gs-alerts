@@ -4,9 +4,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.AppenderBase;
 import ch.qos.logback.core.Layout;
 
-/**
- * Created by bartek on 25.01.15.
- */
+
 public class SNMPTrapLogbackAppender extends AppenderBase<ILoggingEvent> {
 
     protected Layout<ILoggingEvent> layout;

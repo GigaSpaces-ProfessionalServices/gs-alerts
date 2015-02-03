@@ -5,13 +5,11 @@ import org.openspaces.admin.Admin;
 import org.openspaces.admin.AdminFactory;
 import org.openspaces.admin.alert.Alert;
 import org.openspaces.admin.alert.AlertManager;
-import org.openspaces.admin.alert.config.AlertConfiguration;
 import org.openspaces.admin.alert.config.parser.XmlAlertConfigurationParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
-import java.util.Map;
 
 public class GigaSpacesAlertLogback {
 
@@ -33,12 +31,6 @@ public class GigaSpacesAlertLogback {
         Logger logger = LoggerFactory.getLogger("alert-logger");
 
         Admin admin = createAdminApi(commandLine);
-
-        XmlAlertConfigurationParser xmlParser = new XmlAlertConfigurationParser(commandLine.getOptionValue(ALERT_CONFIGURATION));
-        AlertConfiguration[] acs = xmlParser.parse();
-        for (AlertConfiguration ac: acs) {
-            Map<String, String> props = ac.getProperties();
-        }
 
         AlertManager alertManager = admin.getAlertManager();
         alertManager.configure(new XmlAlertConfigurationParser(commandLine.getOptionValue(ALERT_CONFIGURATION)).parse());
@@ -62,7 +54,7 @@ public class GigaSpacesAlertLogback {
         try {
             return parser.parse(options, args);
         } catch (ParseException exception) {
-            System.out.println(exception.getStackTrace());
+            exception.printStackTrace();
             return null;
         }
     }
