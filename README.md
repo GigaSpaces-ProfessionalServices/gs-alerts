@@ -6,7 +6,7 @@ This project integrates XAP alerts with SNMP traps. Each XAP alert will be inter
 ## Ubuntu 14.04 installation instructions:
 
 1. sudo apt-get install snmp snmpd snmptt
-2. vim /etc/snmp/snmptrapd.conf and set: 
+2. vim /etc/snmp/snmptrapd.conf and set:
 disableAuthorization yes.
 Also set
 traphandle default /usr/sbin/snmptt
@@ -17,6 +17,14 @@ TRAPDOPTS='-On -Lsd -p /var/run/snmptrapd.pid'
 4. vim /etc/snmp/snmptt.ini and set:
 unknown\_trap\_log\_enable = 1
 5. sudo service snmpd restart
+
+## CentOS 7 installation instructions:
+1. sudo yum -y install net-snmp
+2. vim /etc/snmp/snmptrapd.conf and set: disableAuthorization yes
+3. vim /etc/sysconfig/snmptrapd: OPTIONS="-On -Lf /var/log/snmp/snmp.log"
+4. sudo mkdir /var/log/snmp
+5. sudo service snmpd restart
+6. sudo service snmptrapd restart
 
 Traps are logged in the following files: /var/log/snmptt/snmptt.log (recognized traps) and /var/log/snmptt/snmpttunknown.log (unknown traps).
 Traps can be defined in the /etc/snmp/snmptt.conf file.
