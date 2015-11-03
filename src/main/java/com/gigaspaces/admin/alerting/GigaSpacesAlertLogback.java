@@ -90,7 +90,7 @@ public class GigaSpacesAlertLogback {
     }
     
     private static boolean areConfigOptionsValid(CommandLine commandLine) {
-        return commandLine.hasOption(ALERT_CONFIGURATION) && commandLine.hasOption(LOG_CONFIGURATION);
+        return commandLine.hasOption(ALERT_CONFIGURATION) && System.getProperty("logback.configurationFile") != null;
     }
 
     private static class AlertTriggeredEventListener implements org.openspaces.admin.alert.events.AlertTriggeredEventListener {
