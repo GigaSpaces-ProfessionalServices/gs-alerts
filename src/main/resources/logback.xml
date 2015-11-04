@@ -19,7 +19,7 @@
         </layout>
     </appender>
 
-    <appender name="SNMP" class="com.gigaspaces.admin.alerting.SNMPTrapLogbackAppender">
+    <appender name="SNMP" class="com.gigaspaces.gigapro.alerting.SNMPTrapLogbackAppender">
         <ManagementHost>127.0.0.1</ManagementHost>
         <ManagementHostTrapListenPort>162</ManagementHostTrapListenPort>
         <LocalIPAddress>127.0.0.1</LocalIPAddress>

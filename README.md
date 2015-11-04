@@ -38,12 +38,12 @@ and check if new entries appeared in /var/log/snmptt/snmptt.log or /var/log/snmp
 
 To execute the application the command is as follows:
 
-java -jar -Dlogback.configurationFile=\<path-to-logback-configuration\> gs-alerting.jar -alert \<path-to-alert-xml-configuration\> -l \<lookup-service\> -secure -username \<username\> -password \<password\>
+java -jar -Dlogback.configurationFile=\<path-to-logback-configuration\> gs-alerting.jar -alert \<path-to-alert-xml-configuration\> -l \<lookup-service\>  -period \<GSA-count-check-frequency, ms\> -secure -username \<username\> -password \<password\>
 
 ## Example
 
 To start sending traps, (without space authentication):
-java -jar -Dlogback.configurationFile=src/main/resources/logback.xml target/gs-alerting.jar -alert src/main/resources/sample-alerts.xml  -l localhost:10098
+java -jar -Dlogback.configurationFile=src/main/resources/logback.xml target/gs-alerting.jar -alert src/main/resources/sample-alerts.xml  -l localhost:10098 -period 10000
 
 ## Remarks
 

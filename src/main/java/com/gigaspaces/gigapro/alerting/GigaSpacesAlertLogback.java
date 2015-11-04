@@ -1,5 +1,6 @@
-package com.gigaspaces.admin.alerting;
+package com.gigaspaces.gigapro.alerting;
 
+import com.gigaspaces.gigapro.alerting.task.GSACountTask;
 import org.apache.commons.cli.*;
 import org.openspaces.admin.Admin;
 import org.openspaces.admin.AdminFactory;
@@ -10,10 +11,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
+import java.util.Timer;
 
 public class GigaSpacesAlertLogback {
 
     public static final String LOOKUP_LOCATORS_OPTION = "l";
+    public static final String CHECK_INTERVAL_OPTION = "interval";
     public static final String SECURE_SPACE_OPTION = "secure";
     public static final String USERNAME_OPTION = "username";
     public static final String PASSWORD_OPTION = "password";
@@ -35,6 +38,12 @@ public class GigaSpacesAlertLogback {
         AlertManager alertManager = admin.getAlertManager();
         alertManager.configure(new XmlAlertConfigurationParser(commandLine.getOptionValue(ALERT_CONFIGURATION)).parse());
         alertManager.getAlertTriggered().add(new AlertTriggeredEventListener(logger));
+
+        Timer timer = new Timer();
+        GSACountTask gsaCountTask = new GSACountTask(admin);
+        Long checkFrequency = Long.parseLong(commandLine.getOptionValue(CHECK_INTERVAL_OPTION));
+        timer.schedule(gsaCountTask, 0, checkFrequency);
+
     }
 
     private static Admin createAdminApi(CommandLine commandLine) {
@@ -66,6 +75,7 @@ public class GigaSpacesAlertLogback {
         options.addOption(USERNAME_OPTION, true, "Username to connect to the grid. Required when grid is secured.");
         options.addOption(PASSWORD_OPTION, true, "Password to connect to the grid. Required when grid is secured.");
         options.addOption(ALERT_CONFIGURATION, true, "Configuration file for alerting threshold.");
+        options.addOption(CHECK_INTERVAL_OPTION, true, "Period of GSA count check, ms.");
         options.addOption(LOG_CONFIGURATION, true, "Configuration file for logging.");
         return options;
     }
@@ -88,9 +98,9 @@ public class GigaSpacesAlertLogback {
             return true;
         }
     }
-    
+
     private static boolean areConfigOptionsValid(CommandLine commandLine) {
-        return commandLine.hasOption(ALERT_CONFIGURATION) && System.getProperty("logback.configurationFile") != null;
+        return commandLine.hasOption(CHECK_INTERVAL_OPTION) && commandLine.hasOption(ALERT_CONFIGURATION) && System.getProperty("logback.configurationFile") != null;
     }
 
     private static class AlertTriggeredEventListener implements org.openspaces.admin.alert.events.AlertTriggeredEventListener {

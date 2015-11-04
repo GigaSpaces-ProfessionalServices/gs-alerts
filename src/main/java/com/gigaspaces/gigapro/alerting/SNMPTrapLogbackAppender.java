@@ -1,4 +1,4 @@
-package com.gigaspaces.admin.alerting;
+package com.gigaspaces.gigapro.alerting;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.AppenderBase;

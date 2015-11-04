@@ -1,4 +1,4 @@
-package com.gigaspaces.admin.alerting;
+package com.gigaspaces.gigapro.alerting;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

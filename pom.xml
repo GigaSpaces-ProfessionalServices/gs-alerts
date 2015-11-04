@@ -61,8 +61,8 @@
                 <configuration>
                     <meminitial>512m</meminitial>
                     <maxmem>2048m</maxmem>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
 
@@ -88,7 +88,7 @@
                             <attachToBuild>true</attachToBuild>
                             <classifier>executable</classifier>
                             <filename>gs-alerting.jar</filename>
-                            <mainClass>com.gigaspaces.admin.alerting.GigaSpacesAlertLogback</mainClass>
+                            <mainClass>com.gigaspaces.gigapro.alerting.GigaSpacesAlertLogback</mainClass>
                         </configuration>
                         <goals>
                             <goal>one-jar</goal>
