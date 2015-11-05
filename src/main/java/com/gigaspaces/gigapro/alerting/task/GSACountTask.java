@@ -31,6 +31,7 @@ public class GSACountTask extends TimerTask {
 
             GridServiceAgent[] agents = machine.getGridServiceAgents().getAgents();
             int currentGsaCount = agents.length;
+            System.out.println("machine " + hostAddress + " GSA " + currentGsaCount);
             List<GSADetails> previousCheckGSAs = getPreviousGSAs(hostAddress);
             List<GSADetails> currentGSAs = new ArrayList<>();
             boolean gsaCountDecreased=gsaCountDecreased(currentGsaCount, previousCheckGSAs);

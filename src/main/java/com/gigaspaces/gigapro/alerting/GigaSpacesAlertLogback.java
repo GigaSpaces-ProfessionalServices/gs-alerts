@@ -17,7 +17,6 @@ public class GigaSpacesAlertLogback {
 
     public static final String LOOKUP_LOCATORS_OPTION = "l";
     public static final String CHECK_INTERVAL_OPTION = "interval";
-    public static final String SECURE_SPACE_OPTION = "secure";
     public static final String USERNAME_OPTION = "username";
     public static final String PASSWORD_OPTION = "password";
     public static final String COMMAND_LINE_NAME = "gs-alerting.jar";
@@ -50,7 +49,7 @@ public class GigaSpacesAlertLogback {
         AdminFactory factory = new AdminFactory();
         factory.addLocators(commandLine.getOptionValue(LOOKUP_LOCATORS_OPTION));
 
-        if(commandLine.hasOption(SECURE_SPACE_OPTION)){
+        if(commandLine.hasOption(USERNAME_OPTION)){
             factory.credentials(commandLine.getOptionValue(USERNAME_OPTION), commandLine.getOptionValue(PASSWORD_OPTION));
         }
 
@@ -71,7 +70,6 @@ public class GigaSpacesAlertLogback {
     private static Options buildOptions() {
         Options options = new Options();
         options.addOption(LOOKUP_LOCATORS_OPTION, true, "GigaSpaces lookup locators.");
-        options.addOption(SECURE_SPACE_OPTION, false, "Connecting to a secure grid.");
         options.addOption(USERNAME_OPTION, true, "Username to connect to the grid. Required when grid is secured.");
         options.addOption(PASSWORD_OPTION, true, "Password to connect to the grid. Required when grid is secured.");
         options.addOption(ALERT_CONFIGURATION, true, "Configuration file for alerting threshold.");
@@ -90,13 +88,17 @@ public class GigaSpacesAlertLogback {
             return false;
         } 
     }
-    
+
     private static boolean areSecureOptionsValid(CommandLine commandLine) {
-        if (commandLine.hasOption(SECURE_SPACE_OPTION)) {
-            return commandLine.hasOption(USERNAME_OPTION) && commandLine.hasOption(PASSWORD_OPTION);
-        } else {
-            return true;
-        }
+        return bothSecurityOptionsSpecified(commandLine) || noneOfSecurityOptionsSpecified(commandLine);
+    }
+
+    private static boolean bothSecurityOptionsSpecified(CommandLine commandLine) {
+        return commandLine.hasOption(USERNAME_OPTION) && commandLine.hasOption(PASSWORD_OPTION);
+    }
+
+    private static boolean noneOfSecurityOptionsSpecified(CommandLine commandLine) {
+        return !(commandLine.hasOption(USERNAME_OPTION) || commandLine.hasOption(PASSWORD_OPTION));
     }
 
     private static boolean areConfigOptionsValid(CommandLine commandLine) {
