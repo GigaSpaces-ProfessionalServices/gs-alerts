@@ -43,7 +43,7 @@ java -jar -Dlogback.configurationFile=\<path-to-logback-configuration\> gs-alert
 ## Example
 
 To start sending traps, (without space authentication):
-java -jar -Dlogback.configurationFile=src/main/resources/logback.xml target/gs-alerting.jar -alert src/main/resources/sample-alerts.xml  -l localhost:10098 -period 10000
+java -jar -Dlogback.configurationFile=src/main/resources/logback.xml target/gs-alerting.jar -alert src/main/resources/sample-alerts.xml  -l localhost:10098 -interval 10000
 
 ## Remarks
 
